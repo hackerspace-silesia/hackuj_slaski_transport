@@ -22,6 +22,7 @@ def segments(distance,step):
     patt = []
     for i in range(n-1):
         patt.append("P "+str(i)+" 1 "+str(i*step)+" "+str(distance[i]))
+    for i in reversed(range(n-1)):
         patt.append("P "+str(i)+" 1 "+str(i*step)+" -"+str(distance[i]))
 #        patt.append("L "+str(i)+" 1 "+str(i*step)+" "+str((i+1)*step)+" "+str(distance[i]))
 #        patt.append("L "+str(i)+" 1 "+str(i*step)+" "+str((i+1)*step)+" -"+str(distance[i]))
@@ -34,13 +35,15 @@ def segments(distance,step):
 #path to input, temporary and output layers
 path = os.path.dirname(QgsProject.instance().fileName())+"/warstwy/"  
 #input layers 
-density = path+"GOP_gestosc_zaludnienia.shp"
-line = path+"KSS7.shp"
-outputf = path+"1000KSS7"
+#density = path+"GOP_gestosc_zaludnienia.shp"
+density = path+"PD_BREC_2012_OBW.shp"
+line = path+"KSS8.shp"
+outputf = path+"500KSS8bis"
 outputfile = outputf+".shp"
 #bufsize and scale
-bufsize = 1000 #in meters
-scale = 30000 #peoples per 1000m (needed for offset visualization)
+bufsize = 500 #in meters
+span = 500 #max value on popugraf
+scale = 20000 #peoples per span m (needed for offset visualization)
 step = 100 #segments size in meters
 #INPUT PARAMETERS STOP
 
@@ -115,15 +118,13 @@ n = int(totlen/step)
 offset = n*[0]
 for feature in przeciecie.getFeatures():
     value = expression.evaluate(feature)
-    diva = feature.attributes()[2]*value/1000000 #crucial point - needs to be determine
+    #diva = feature.attributes()[2]*value/1000000 #for 1km grid ;crucial point - needs to be determine
+    diva = feature.attributes()[11]*value/feature.attributes()[10] #for BREC 
     cat = feature.attributes()[0]
     offset[cat]=offset[cat]+int(diva)
     
-# przeciecie.commitChanges()
-# punkty.commitChanges()
-
 #normalizing poulation offset for line acording to scale
-offset = [1000*item/scale for item in offset]
+offset = [span*item/scale for item in offset]
 
 #making line offset according to population offset
 segments(offset,step)

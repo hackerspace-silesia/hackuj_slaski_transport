@@ -9,6 +9,7 @@ def csvtopoints(filename):
     with open(filename, 'rU') as f:
         reader = csv.reader(f,delimiter=';')
         reader = list(reader)[1:]
+        print "dupa"
         points = [[[float(line[3]),float(line[4])],[float(line[1]),float(line[2])]] for line in reader]
         return points
 
@@ -77,5 +78,6 @@ def makeclusters(points):
         a = csv.writer(fp, delimiter=',')
         a.writerows(savepoints)
 
-points = csvtopoints('')
+points = csvtopoints('trips-GOP-luty-min-3-pojazdy.csv')
+print "dupa"
 makeclusters(points)
