@@ -38,11 +38,11 @@ path = os.path.dirname(QgsProject.instance().fileName())+"/warstwy/"
 #density = path+"GOP_gestosc_zaludnienia.shp"
 density = path+"PD_BREC_2012_OBW.shp"
 line = path+"KSS8.shp"
-outputf = path+"500KSS8bis"
+outputf = path+"dup"
 outputfile = outputf+".shp"
 #bufsize and scale
 bufsize = 500 #in meters
-span = 500 #max value on popugraf
+span = 1500 #max value on popugraf
 scale = 20000 #peoples per span m (needed for offset visualization)
 step = 100 #segments size in meters
 #INPUT PARAMETERS STOP
